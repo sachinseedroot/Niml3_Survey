@@ -2,83 +2,111 @@ package com.example.neha.myapplication.Volley;
 
 import android.content.Context;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.neha.myapplication.Utilities.AppConstants;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class VolleyObject {
 
     private static Context mcontext;
     private static MyVolleySingleton myVolleySingleton;
+    private static VolleyObject volleyObject;
 
-    private String urlString="http://wap.globocom.co.in/mglobopay/getHlrLookUpByMdn/919922622444";
-    public static void initSDK(Context context){
+
+    public static void initialize(Context context){
         mcontext=context.getApplicationContext();
         myVolleySingleton = new MyVolleySingleton(mcontext);
     }
 
-    public void fetchDatabyUrl(JSONObject jsonObject, final VolleyResponseInterface volleyResponseInterface){
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                urlString, jsonObject, new Response.Listener<JSONObject>() {
+    public void fetchSureveyData(final String token, final VolleyResponseInterface volleyResponseInterface){
 
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, AppConstants.URL_SURVEY_ARRAY, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONObject response) {
-                volleyResponseInterface.onResponse(response.toString(),null);
-
+            public void onResponse(JSONArray response) {
+                volleyResponseInterface.onResponse(response,null);
             }
         }, new Response.ErrorListener() {
-
             @Override
             public void onErrorResponse(VolleyError error) {
                 volleyResponseInterface.onResponse(null,error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + token);
+
+                return headers;
+            }
+        };
+
+        //Retry Policy
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         // Adding request to request queue
-        myVolleySingleton.addToRequestQueue(jsonObjReq);
+        myVolleySingleton.addToRequestQueue(jsonArrayRequest);
     }
 
-    public void fetchDatabyUrlInterface(JSONObject jsonObject, final VolleyResponseInterface volleyResponseInterface){
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                urlString, jsonObject, new Response.Listener<JSONObject>() {
+    public void refreshToken(String url, final VolleyObjectResponseInterface volleyResponseInterface){
+        try {
 
-            @Override
-            public void onResponse(JSONObject response) {
-                volleyResponseInterface.onResponse(response.toString(),null);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("grant_type", "password");
+            jsonObject.put("username", "carlos@nimbl3.com");
+            jsonObject.put("password", "antikera");
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                    url, jsonObject, new Response.Listener<JSONObject>() {
 
-            }
-        }, new Response.ErrorListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    volleyResponseInterface.onResponse(response, null);
+                }
+            }, new Response.ErrorListener() {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                volleyResponseInterface.onResponse(null,error);
-            }
-        });
+                @Override
+                public void onErrorResponse(VolleyError error) {
 
-        // Adding request to request queue
-        myVolleySingleton.addToRequestQueue(jsonObjReq);
+                    volleyResponseInterface.onResponse(null, error);
+                }
+            });
+            //Retry Policy
+            jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
+                    10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+            // Adding request to request queue
+            myVolleySingleton.addToRequestQueue(jsonObjReq);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+    public static VolleyObject getSDKconfigInstance() {
 
-    public void fetchDatabyUrlString(String url, final VolleyResponseInterface volleyResponseInterface){
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        volleyResponseInterface.onResponse(response,null);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                volleyResponseInterface.onResponse(null,error);
+        try {
+            if (volleyObject == null) {
+                volleyObject = new VolleyObject();
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        // Adding request to request queue
-        myVolleySingleton.addToRequestQueue(stringRequest);
+        return volleyObject;
     }
 }

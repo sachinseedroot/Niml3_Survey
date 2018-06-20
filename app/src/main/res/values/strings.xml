@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Survey App</string>
+    <string name="fa_refresh">&#xf021;</string>
+    <string name="fa_hamburger">&#xf0c9;</string>
+    <string name="fa_hollow_circle">&#xf10c;</string>
+    <string name="fa_solid_circle">&#xf111;</string>
+    <string name="surveytext" >Survey\nApp</string>
 </resources>

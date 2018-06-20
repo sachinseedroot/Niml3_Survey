@@ -4,6 +4,78 @@
     android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
+<RelativeLayout
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/header_rely">
+    <TextView
+        android:padding="15dp"
+        android:textSize="20sp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/fa_refresh"
+        android:textColor="@color/white"
+        android:id="@+id/refreshTV"
+        android:gravity="center"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SURVEYS"
+        android:id="@+id/titleTV"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_centerInParent="true"/>
 
+    <TextView
+        android:padding="15dp"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/fa_hamburger"
+        android:textColor="@color/white"
+        android:id="@+id/hamburgerTV"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header_rely">
+        <com.example.neha.myapplication.Utilities.VerticalViewPager
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/viewpager_survey">
+        </com.example.neha.myapplication.Utilities.VerticalViewPager>
+        <LinearLayout
+            android:padding="5dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/bullets_lin"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            ></LinearLayout>
+
+        <Button
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:id="@+id/takeSurveyBtn"
+            android:textColor="@color/white"
+            android:background="@drawable/button_shape_oval"
+            android:layout_height="wrap_content"
+            android:text="Take the Survey"/>
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
+
 import com.example.neha.myapplication.R;
 import com.example.neha.myapplication.Utilities.AppUtilities;
+import com.example.neha.myapplication.Utilities.TypeFaceHelper;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -19,6 +22,9 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        TextView splashTv = (TextView) findViewById(R.id.splashTV);
+        splashTv.setTypeface(TypeFaceHelper.getInstance(this).getStyleTypeFace(TypeFaceHelper.FiraSansBold));
 
         if (AppUtilities.isNetworkAvailable(this)) {
             new Handler().postDelayed(new Runnable() {
@@ -40,7 +46,7 @@ public class SplashActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Please check your internet connection and try again!")
                     .setCancelable(false)
-                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    .setNeutralButton("Close app", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             finishAffinity();
                         }

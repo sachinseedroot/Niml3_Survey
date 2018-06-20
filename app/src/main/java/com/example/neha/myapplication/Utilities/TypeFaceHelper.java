@@ -7,6 +7,10 @@ import java.util.HashMap;
 
 public class TypeFaceHelper {
 
+    public static final String FONT_AWESOME = "fonts/FontAwesome.otf";
+    public static final String FiraSansLight = "fonts/FiraSansLight.ttf";
+    public static final String FiraSansBold = "fonts/FiraSansBold.ttf";
+
     private static TypeFaceHelper typeFaceHelper;
     private final Context context;
 
