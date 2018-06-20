@@ -44,7 +44,9 @@ public class Presenter implements MainMVP.presenter {
 
     @Override
     public void getdata(final Context mcontext, String token) {
-        if(!TextUtils.isEmpty(token)) {
+        if(TextUtils.isEmpty(token)) {
+            token="";
+        }
             if (AppUtilities.isNetworkAvailable(mcontext)) {
                 showProgress("Fetching survey details, please wait...");
                 VolleyObject.getSDKconfigInstance().fetchSureveyData(token, new VolleyResponseInterface() {
@@ -66,9 +68,7 @@ public class Presenter implements MainMVP.presenter {
             } else {
                 mainview.displayDialog(mcontext, "No internet connection!", "Please check your internet & click refresh");
             }
-        }else{
-            mainview.displayDialog(mcontext, "Oops!", "Something went wrong...");
-        }
+
     }
 
     @Override
